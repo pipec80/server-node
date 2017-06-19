@@ -1,0 +1,40 @@
+{
+    "name": "server-side",
+    "version": "1.0.0",
+    "description": "server app y restful",
+    "main": "server.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "node server.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/pipec80/server-node.git"
+    },
+    "keywords": [
+        "RESTful",
+        "API",
+        "Authentication",
+        "JWT",
+        "Tutorial"
+    ],
+    "author": "felipe castro valenzuela",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/pipec80/server-node/issues"
+    },
+    "homepage": "https://github.com/pipec80/server-node#readme",
+    "dependencies": {
+        "bcrypt": "^1.0.2",
+        "body-parser": "^1.17.2",
+        "express": "^4.15.3",
+        "jsonwebtoken": "^7.4.1",
+        "lodash": "^4.17.4",
+        "method-override": "^2.3.9",
+        "mongoose": "^4.10.7",
+        "morgan": "^1.8.2",
+        "passport": "^0.3.2",
+        "passport-jwt": "^2.2.1",
+        "passport-local": "^1.0.0"
+    }
+}
