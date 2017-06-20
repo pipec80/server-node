@@ -14,6 +14,7 @@
     // Middleware to require login/auth
     var requireAuth = passport.authenticate('jwt', { session: false });
     var requireLogin = passport.authenticate('local', { session: false });
+
     module.exports = function(app) {
         // api ---------------------------------------------------------------------
         app.use(passport.initialize());

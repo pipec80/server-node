@@ -20,15 +20,17 @@ var localLogin = new LocalStrategy(localOptions, function(email, password, done)
     // usually this would be a database call:
     User.findOne({ email: email }, function(err, user) {
         if (err) { return done(err); }
-        if (!user) { return done(null, false, { error: 'Your login details could not be verified. Please try again.' }); }
-
-        user.comparePassword(password, function(err, isMatch) {
-            if (err) { return done(err); }
-            if (!isMatch) { return done(null, false, { error: 'Your login details could not be verified. Please try again.' }); }
-            return done(null, user);
-        });
+        if (!user) {
+            return done(null, false, { message: 'Incorrect username.' });
+        }
+        if (!user.comparePassword(password)) {
+            return done(null, false, { message: 'Incorrect password.' });
+        }
+        return done(null, user);
     });
 });
+
+
 
 // Setting up JWT login strategy
 var jwtLogin = new JwtStrategy(jwtOptions, function(jwtPayload, done) {

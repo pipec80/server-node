@@ -72,29 +72,9 @@ exports.register = function(req, res, next) {
 };
 
 exports.login = function(req, res) {
-    console.log("login", req);
-    User.findOne({
-        email: req.body.email
-    }, function(err, user) {
-        if (err) { throw err; }
-        if (!user) {
-            return res.status(401).json({
-                message: 'Authentication failed. Invalid user or password.'
-            });
-        }
-        user.comparePassword(req.body.password, function(err, isMatch) {
-            if (err) { throw err; }
-            console.log('req.body.password:', isMatch);
-            if (!isMatch) {
-                return res.status(401).json({
-                    message: 'Authentication failed. Invalid user or password.'
-                });
-            }
-        });
-        var payload = { email: user.email, id: user._id };
-        var token = jwt.sign(payload, config.secret, {
-            expiresIn: 10080 // in seconds
-        }); //'JWT ' + token
-        res.status(200).json({ token: token, user: user });
-    });
+    var payload = { email: req.user.email, id: req.user._id };
+    var token = jwt.sign(payload, config.secret, {
+        expiresIn: 10080 // in seconds
+    }); //'JWT ' + token
+    res.status(200).json({ token: token, user: req.user });
 };
