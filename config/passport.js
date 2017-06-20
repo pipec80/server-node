@@ -16,9 +16,9 @@ const localOptions = {
 
 // Setting up local login strategy
 var localLogin = new LocalStrategy(localOptions, function(email, password, done) {
-    console.log('payload received', localOptions, email, password);
+    console.log('payload received localLogin', localOptions, email, password);
     // usually this would be a database call:
-    User.findById({ email: email }, function(err, user) {
+    User.findOne({ email: email }, function(err, user) {
         if (err) { return done(err); }
         if (!user) { return done(null, false, { error: 'Your login details could not be verified. Please try again.' }); }
 
@@ -32,9 +32,9 @@ var localLogin = new LocalStrategy(localOptions, function(email, password, done)
 
 // Setting up JWT login strategy
 var jwtLogin = new JwtStrategy(jwtOptions, function(jwtPayload, done) {
-    console.log('payload received', jwtPayload);
+    console.log('payload received jwtLogin', jwtPayload);
     // usually this would be a database call:
-    User.findById(jwtPayload._id, function(err, user) {
+    User.findById(jwtPayload.id, function(err, user) {
         if (err) { return done(err, false); }
         if (user) {
             done(null, user);

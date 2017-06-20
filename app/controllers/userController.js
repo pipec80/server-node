@@ -1,13 +1,7 @@
 'use strict';
-var mongoose = require('mongoose'),
-    jwt = require('jsonwebtoken'),
-    bcrypt = require('bcrypt'),
-    User = mongoose.model('User'),
+var jwt = require('jsonwebtoken'),
     config = require('../../config/config');
-
-// Generate JWT
-// TO-DO Add issuer and audience
-
+const User = require('../models/userModel');
 
 exports.register = function(req, res, next) {
     // Check for registration errors
@@ -61,16 +55,17 @@ exports.register = function(req, res, next) {
             }
         });
 
-        var newUser = new User(user);
-        newUser.password = bcrypt.hashSync(req.body.password, 10);
-        newUser.save(function(err, user) {
+        user.save(function(err, user) {
             if (err) {
                 return res.status(400).send({
                     message: err
                 });
             } else {
-                user.password = undefined;
-                return res.json(user);
+                var payload = { email: user.email, id: user._id };
+                var token = jwt.sign(payload, config.secret, {
+                    expiresIn: 10080 // in seconds
+                });
+                res.status(200).json({ token: 'JWT ' + token, user: user });
             }
         });
     });
@@ -81,13 +76,22 @@ exports.login = function(req, res) {
     User.findOne({
         email: req.body.email
     }, function(err, user) {
-        if (err) throw err;
-        if (!user || !user.comparePassword(req.body.password)) {
+        if (err) { throw err; }
+        if (!user) {
             return res.status(401).json({
                 message: 'Authentication failed. Invalid user or password.'
             });
         }
-        var payload = { email: user.email, _id: req._id };
+        user.comparePassword(req.body.password, function(err, isMatch) {
+            if (err) { throw err; }
+            console.log('req.body.password:', isMatch);
+            if (!isMatch) {
+                return res.status(401).json({
+                    message: 'Authentication failed. Invalid user or password.'
+                });
+            }
+        });
+        var payload = { email: user.email, id: user._id };
         var token = jwt.sign(payload, config.secret, {
             expiresIn: 10080 // in seconds
         });

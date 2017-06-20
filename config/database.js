@@ -1,5 +1,13 @@
 'use strict';
-module.exports = {
-    remoteUrl: 'mongodb://node:nodeuser@mongo.onmodulus.net:27017/uwO3mypu',
-    localUrl: 'mongodb://localhost/administradorCasa' //nombre de la db
-};
+const Mongoose = require('mongoose');
+const config = require('./config');
+
+Mongoose.connect(config.dblocalUrl);
+
+const db = Mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error'));
+db.once('open', function callback() {
+    console.log("Connection with database succeeded.");
+});
+
+exports.db = db;

@@ -1,4 +1,5 @@
 module.exports = {
-    TOKEN_SECRET: process.env.TOKEN_SECRET || 'tokenultrasecreto',
-    secret: 'tokenultrasecreto'
+    secret: 'tokenultrasecreto',
+    dblocalUrl: 'mongodb://localhost/administradorCasa',
+    port: 3000,
 };
