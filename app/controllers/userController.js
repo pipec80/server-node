@@ -64,8 +64,8 @@ exports.register = function(req, res, next) {
                 var payload = { email: user.email, id: user._id };
                 var token = jwt.sign(payload, config.secret, {
                     expiresIn: 10080 // in seconds
-                });
-                res.status(200).json({ token: 'JWT ' + token, user: user });
+                }); //'JWT ' + token
+                res.status(200).json({ token: token, user: user });
             }
         });
     });
@@ -94,7 +94,7 @@ exports.login = function(req, res) {
         var payload = { email: user.email, id: user._id };
         var token = jwt.sign(payload, config.secret, {
             expiresIn: 10080 // in seconds
-        });
-        res.status(200).json({ token: 'JWT ' + token, user: user });
+        }); //'JWT ' + token
+        res.status(200).json({ token: token, user: user });
     });
 };
