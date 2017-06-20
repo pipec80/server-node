@@ -8,6 +8,7 @@
 
     var userHandlers = require('../controllers/userController.js');
     var passportService = require('../../config/passport');
+
     var apiRoutes = express.Router(),
         authRoutes = express.Router(),
         userRoutes = express.Router();
