@@ -63,7 +63,7 @@ exports.register = function(req, res, next) {
             } else {
                 var payload = { email: user.email, id: user._id };
                 var token = jwt.sign(payload, config.secret, {
-                    expiresIn: 10080 // in seconds
+                    expiresIn: 7200 // in seconds 60, "2 days", "10h", "7d"
                 }); //'JWT ' + token
                 res.status(200).json({ token: token, user: user });
             }
