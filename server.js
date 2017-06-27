@@ -33,9 +33,9 @@ app.use(bodyParser.json({ type: 'application/vnd.api+json' })); // parse applica
 app.use(methodOverride('X-HTTP-Method-Override')); // override with the X-HTTP-Method-Override header in the request
 app.use(express.static('./public')); // set the static files location /public/img will be /img for users
 // webapp ======================================================================
-app.get('*', function(req, res) {
+/*app.get('*', function(req, res) {
     res.sendFile(path.resolve('public/index.html')); // load the single view file (angular will handle the page changes on the front-end)
-});
+});*/
 // routes ======================================================================
 var routes = require('./app/routes/apiRoutes.js');
 routes(app);

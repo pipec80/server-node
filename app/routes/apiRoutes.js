@@ -7,17 +7,23 @@
     var ROLE_ADMIN = require('../../config/constants').ROLE_ADMIN;
 
     var userHandlers = require('../controllers/userController.js');
+    var todoListHandlers = require('../controllers/todoListController.js');
     var passportService = require('../../config/passport');
 
     var apiRoutes = express.Router(),
         authRoutes = express.Router(),
+        listRoutes = express.Router(),
         userRoutes = express.Router();
     // Middleware to require login/auth
     var requireAuth = passport.authenticate('jwt', { session: false });
     var requireLogin = passport.authenticate('local', { session: false });
 
     module.exports = function(app) {
-        // api ---------------------------------------------------------------------
+        //= ========================
+        // Set url for API group routes
+        //= ========================
+        app.use('/api', apiRoutes);
+        //
         app.use(passport.initialize());
         // Set auth routes as subgroup/middleware to apiRoutes
         apiRoutes.use('/auth', authRoutes);
@@ -37,6 +43,15 @@
         apiRoutes.post('/protected', requireAuth, (req, res) => {
             res.send({ content: 'The protected test route is functional!' });
         });
-        // Set url for API group routes
-        app.use('/api', apiRoutes);
+        //= ========================
+        // List Routes
+        //= ========================
+        apiRoutes.route('/tasks')
+            .get(requireAuth, todoListHandlers.lists)
+            .post(requireAuth, todoListHandlers.createTask);
+        apiRoutes.route('/tasks/:taskId')
+            .get(requireAuth, todoListHandlers.readTask)
+            .put(requireAuth, todoListHandlers.updateTask)
+            .delete(requireAuth, todoListHandlers.deleteTask);
+
     };
