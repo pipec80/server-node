@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
 const path = require('path');
 var helmet = require('helmet');
+var compression = require('compression');
 // configuration ===============================================================
 const db = require('./config/database');
 const config = require('./config/config');
@@ -24,6 +25,7 @@ var allowCrossDomain = function(req, res, next) {
         next();
     }
 };
+app.use(compression());
 app.use(helmet()); //
 app.use(allowCrossDomain);
 app.use(morgan('combined')); // log every request to the console
